@@ -4,11 +4,8 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
-# client OpenAI con la chiave da Render
+# Usa la variabile d'ambiente su Render
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-
-# ID del tuo assistente (se vuoi usarne uno già creato)
-ASSISTANT_ID = "asst_jbk2wJUFpJxXu6jDfOnF14aB"
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -16,21 +13,20 @@ def chat():
     user_message = data.get("message", "")
 
     try:
-        # nuovo endpoint Responses API
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",   # più veloce/economico
+        # Chiamata diretta al modello (senza Assistants API, solo completions)
+        completion = client.chat.completions.create(
+            model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "Sei un assistente utile che spiega in modo chiaro e semplice."},
                 {"role": "user", "content": user_message}
             ]
         )
 
-        reply = response.choices[0].message["content"]
-
-        return jsonify({"reply": reply})
+        reply = completion.choices[0].message.content
+        return jsonify({"reply": reply or "Nessuna risposta ricevuta."})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
