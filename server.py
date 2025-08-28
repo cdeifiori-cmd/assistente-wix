@@ -4,8 +4,11 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
-# Client con nuova API
+# client OpenAI con la chiave da Render
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
+# ID del tuo assistente (se vuoi usarne uno già creato)
+ASSISTANT_ID = "asst_jbk2wJUFpJxXu6jDfOnF14aB"
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -13,16 +16,17 @@ def chat():
     user_message = data.get("message", "")
 
     try:
-        # Nuova Responses API
+        # nuovo endpoint Responses API
         response = client.chat.completions.create(
-            model="gpt-4o-mini",   # oppure gpt-4o se disponibile
+            model="gpt-4o-mini",   # più veloce/economico
             messages=[
-                {"role": "system", "content": "Sei un assistente che spiega l'Analisi Transazionale."},
+                {"role": "system", "content": "Sei un assistente utile che spiega in modo chiaro e semplice."},
                 {"role": "user", "content": user_message}
             ]
         )
 
         reply = response.choices[0].message["content"]
+
         return jsonify({"reply": reply})
 
     except Exception as e:
