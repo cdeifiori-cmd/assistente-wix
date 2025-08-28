@@ -4,7 +4,15 @@ from openai import OpenAI
 app = Flask(__name__)
 
 # In Render useremo una variabile d'ambiente, ma per test locale puoi scrivere qui la tua API key
-client = OpenAI(api_key="LA_TUA_API_KEY")
+client = OpenAI(api_key="import os
+from flask import Flask, request, jsonify
+from openai import OpenAI
+
+app = Flask(__name__)
+
+# Usa la variabile d'ambiente su Render
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+")
 
 # ID del tuo assistente personalizzato
 ASSISTANT_ID = "asst_jbk2wJUFpJxXu6jDfOnF14aB"
@@ -42,3 +50,4 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
