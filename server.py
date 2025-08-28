@@ -4,7 +4,7 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
-# Client con la nuova API
+# Client con nuova API
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 @app.route("/chat", methods=["POST"])
@@ -13,9 +13,9 @@ def chat():
     user_message = data.get("message", "")
 
     try:
-        # Usa la nuova Responses API
+        # Nuova Responses API
         response = client.chat.completions.create(
-            model="gpt-4o-mini",   # oppure "gpt-4o" se vuoi il modello maggiore
+            model="gpt-4o-mini",   # oppure gpt-4o se disponibile
             messages=[
                 {"role": "system", "content": "Sei un assistente che spiega l'Analisi Transazionale."},
                 {"role": "user", "content": user_message}
@@ -23,7 +23,6 @@ def chat():
         )
 
         reply = response.choices[0].message["content"]
-
         return jsonify({"reply": reply})
 
     except Exception as e:
