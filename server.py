@@ -4,10 +4,10 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
-# Legge la tua API key da Render (Environment Variable)
+# Usa la variabile d'ambiente su Render
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
-# Inserisci l’ID del tuo assistente creato
+# ID del tuo assistente personalizzato (quello che hai creato prima)
 ASSISTANT_ID = "asst_jbk2wJUFpJxXu6jDfOnF14aB"
 
 @app.route("/chat", methods=["POST"])
@@ -19,7 +19,7 @@ def chat():
         # 1. Crea un thread
         thread = client.beta.threads.create()
 
-        # 2. Aggiungi il messaggio dell’utente
+        # 2. Aggiungi messaggio dell’utente
         client.beta.threads.messages.create(
             thread_id=thread.id,
             role="user",
